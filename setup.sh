@@ -23,6 +23,7 @@ TARGET_DIR=""
 INSTALL_CONTEXT7="n"
 INSTALL_GEMINI="n"
 INSTALL_NOTIFICATIONS="n"
+USE_DIRECT_COMMANDS="n"
 OS=""
 AUDIO_PLAYER=""
 OVERWRITE_ALL="n"
@@ -269,6 +270,16 @@ prompt_optional_components() {
     if ! safe_read_yn INSTALL_NOTIFICATIONS "  Set up notification hooks? (y/n): "; then
         exit 1
     fi
+    echo
+    
+    # Sub-agent preference
+    print_color "$CYAN" "Command Template Preference"
+    echo "  Choose between multi-agent orchestration and direct analysis commands"
+    echo "  • Multi-agent: Uses sub-agents for complex analysis (original behavior)"
+    echo "  • Direct: Single-agent analysis without sub-agents (simpler, faster)"
+    if ! safe_read_yn USE_DIRECT_COMMANDS "  Use direct commands (no sub-agents)? (y/n): "; then
+        exit 1
+    fi
     
     # Only detect OS if notifications are enabled
     if [ "$INSTALL_NOTIFICATIONS" = "y" ]; then
@@ -379,20 +390,38 @@ copy_framework_files() {
         for cmd in "$SCRIPT_DIR/commands/"*.md; do
             if [ -f "$cmd" ]; then
                 basename_cmd="$(basename "$cmd")"
+                
                 # Skip gemini-consult.md unless Gemini is selected
                 if [ "$basename_cmd" = "gemini-consult.md" ] && [ "$INSTALL_GEMINI" != "y" ]; then
                     continue
                 fi
-                dest="$TARGET_DIR/.claude/commands/$basename_cmd"
-                copy_with_check "$cmd" "$dest" "Command template"
+                
+                # Handle direct vs multi-agent command preference
+                if [ "$USE_DIRECT_COMMANDS" = "y" ]; then
+                    # Use direct versions if they exist, otherwise use original
+                    direct_cmd="${basename_cmd%.md}-direct.md"
+                    if [ -f "$SCRIPT_DIR/commands/$direct_cmd" ]; then
+                        # Copy direct version with original name
+                        dest="$TARGET_DIR/.claude/commands/$basename_cmd"
+                        copy_with_check "$SCRIPT_DIR/commands/$direct_cmd" "$dest" "Direct command template"
+                    else
+                        # No direct version exists, use original
+                        dest="$TARGET_DIR/.claude/commands/$basename_cmd"
+                        copy_with_check "$cmd" "$dest" "Command template"
+                    fi
+                else
+                    # Use original multi-agent versions
+                    dest="$TARGET_DIR/.claude/commands/$basename_cmd"
+                    copy_with_check "$cmd" "$dest" "Command template"
+                fi
             fi
         done
     fi
     
     # Copy hooks based on user selections
     if [ -d "$SCRIPT_DIR/hooks" ]; then
-        # Always copy subagent context injector (core feature)
-        if [ -f "$SCRIPT_DIR/hooks/subagent-context-injector.sh" ]; then
+        # Copy subagent context injector only if not using direct commands
+        if [ "$USE_DIRECT_COMMANDS" != "y" ] && [ -f "$SCRIPT_DIR/hooks/subagent-context-injector.sh" ]; then
             copy_with_check "$SCRIPT_DIR/hooks/subagent-context-injector.sh" \
                           "$TARGET_DIR/.claude/hooks/subagent-context-injector.sh" \
                           "Hook script (core feature)"
@@ -585,8 +614,10 @@ EOF
         pretooluse_hooks+=("gemini-context")
     fi
     
-    # Always add sub-agent context injector
-    pretooluse_hooks+=("subagent-context")
+    # Add sub-agent context injector only if not using direct commands
+    if [ "$USE_DIRECT_COMMANDS" != "y" ]; then
+        pretooluse_hooks+=("subagent-context")
+    fi
     
     # Write PreToolUse hooks
     if [ ${#pretooluse_hooks[@]} -gt 0 ]; then
