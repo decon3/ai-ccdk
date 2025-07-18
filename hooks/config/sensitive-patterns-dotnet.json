@@ -1,0 +1,269 @@
+{
+  "patterns": [
+    {
+      "name": "Connection Strings",
+      "pattern": "(?i)(connectionstring|connection\\s*string)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s;]+",
+      "description": "Database connection strings",
+      "severity": "high"
+    },
+    {
+      "name": "SQL Server Connection",
+      "pattern": "(?i)(server|data\\s*source|initial\\s*catalog|user\\s*id|password)[\"'\\s]*=[\"'\\s]*[^\"';\\s]+",
+      "description": "SQL Server connection parameters",
+      "severity": "high"
+    },
+    {
+      "name": "Azure Connection Strings",
+      "pattern": "(?i)(DefaultEndpointsProtocol|AccountName|AccountKey|EndpointSuffix)[\"'\\s]*=[\"'\\s]*[^\"';\\s]+",
+      "description": "Azure storage connection strings",
+      "severity": "high"
+    },
+    {
+      "name": "JWT Secrets",
+      "pattern": "(?i)(jwt[_-]?secret|jwt[_-]?key|bearer[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{20,}",
+      "description": "JWT signing secrets and keys",
+      "severity": "high"
+    },
+    {
+      "name": "API Keys",
+      "pattern": "(?i)(api[_-]?key|apikey|access[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{10,}",
+      "description": "API keys and access tokens",
+      "severity": "high"
+    },
+    {
+      "name": "Azure Key Vault",
+      "pattern": "(?i)(vaultUri|vault[_-]?url|key[_-]?vault)[\"'\\s]*[:=][\"'\\s]*https://[^\"'\\s]+\\.vault\\.azure\\.net",
+      "description": "Azure Key Vault URLs",
+      "severity": "medium"
+    },
+    {
+      "name": "Client Secrets",
+      "pattern": "(?i)(client[_-]?secret|client[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "OAuth client secrets",
+      "severity": "high"
+    },
+    {
+      "name": "Application Insights",
+      "pattern": "(?i)(instrumentationkey|applicationinsights)[\"'\\s]*[:=][\"'\\s]*[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}",
+      "description": "Application Insights instrumentation keys",
+      "severity": "medium"
+    },
+    {
+      "name": "Sendgrid API Key",
+      "pattern": "(?i)(sendgrid[_-]?api[_-]?key)[\"'\\s]*[:=][\"'\\s]*SG\\.[A-Za-z0-9_-]{22}\\.[A-Za-z0-9_-]{43}",
+      "description": "SendGrid API keys",
+      "severity": "high"
+    },
+    {
+      "name": "Twilio Auth Token",
+      "pattern": "(?i)(twilio[_-]?auth[_-]?token|twilio[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{32}",
+      "description": "Twilio authentication tokens",
+      "severity": "high"
+    },
+    {
+      "name": "Redis Connection",
+      "pattern": "(?i)(redis[_-]?connection|redis[_-]?url)[\"'\\s]*[:=][\"'\\s]*redis://[^\"'\\s]+",
+      "description": "Redis connection strings",
+      "severity": "medium"
+    },
+    {
+      "name": "Password Fields",
+      "pattern": "(?i)(password|pwd|pass)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s;]{6,}",
+      "description": "Password fields in configuration",
+      "severity": "high"
+    },
+    {
+      "name": "OAuth Secrets",
+      "pattern": "(?i)(oauth[_-]?secret|oauth[_-]?key|oauth[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "OAuth secrets and tokens",
+      "severity": "high"
+    },
+    {
+      "name": "Encryption Keys",
+      "pattern": "(?i)(encryption[_-]?key|encrypt[_-]?key|aes[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{16,}",
+      "description": "Encryption keys",
+      "severity": "high"
+    },
+    {
+      "name": "Certificate Passwords",
+      "pattern": "(?i)(certificate[_-]?password|cert[_-]?password|pfx[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s;]{6,}",
+      "description": "Certificate passwords",
+      "severity": "high"
+    },
+    {
+      "name": "Azure Service Principal",
+      "pattern": "(?i)(client[_-]?id|tenant[_-]?id|subscription[_-]?id)[\"'\\s]*[:=][\"'\\s]*[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}",
+      "description": "Azure service principal identifiers",
+      "severity": "medium"
+    },
+    {
+      "name": "Cosmos DB Keys",
+      "pattern": "(?i)(cosmosdb[_-]?key|cosmos[_-]?key|documentdb[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{64,}",
+      "description": "Cosmos DB access keys",
+      "severity": "high"
+    },
+    {
+      "name": "Service Bus Connection",
+      "pattern": "(?i)(servicebus[_-]?connection|sb[_-]?connection)[\"'\\s]*[:=][\"'\\s]*Endpoint=sb://[^\"'\\s;]+",
+      "description": "Azure Service Bus connection strings",
+      "severity": "high"
+    },
+    {
+      "name": "Storage Account Keys",
+      "pattern": "(?i)(storage[_-]?account[_-]?key|storage[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{88}",
+      "description": "Azure Storage account keys",
+      "severity": "high"
+    },
+    {
+      "name": "Email Passwords",
+      "pattern": "(?i)(email[_-]?password|mail[_-]?password|smtp[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s;]{6,}",
+      "description": "Email service passwords",
+      "severity": "high"
+    },
+    {
+      "name": "Database Passwords",
+      "pattern": "(?i)(db[_-]?password|database[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s;]{6,}",
+      "description": "Database passwords",
+      "severity": "high"
+    },
+    {
+      "name": "Private Keys",
+      "pattern": "-----BEGIN (RSA )?PRIVATE KEY-----[\\s\\S]*-----END (RSA )?PRIVATE KEY-----",
+      "description": "Private key blocks",
+      "severity": "high"
+    },
+    {
+      "name": "Certificate Files",
+      "pattern": "-----BEGIN CERTIFICATE-----[\\s\\S]*-----END CERTIFICATE-----",
+      "description": "Certificate blocks",
+      "severity": "medium"
+    },
+    {
+      "name": "Hardcoded Secrets",
+      "pattern": "(?i)(secret|token|key)[\"'\\s]*[:=][\"'\\s]*['\"][A-Za-z0-9+/=_-]{20,}['\"]",
+      "description": "Hardcoded secrets in code",
+      "severity": "high"
+    },
+    {
+      "name": "NuGet API Keys",
+      "pattern": "(?i)(nuget[_-]?api[_-]?key|nuget[_-]?key)[\"'\\s]*[:=][\"'\\s]*oy2[A-Za-z0-9]{43}",
+      "description": "NuGet API keys",
+      "severity": "high"
+    },
+    {
+      "name": "Azure Function Keys",
+      "pattern": "(?i)(function[_-]?key|x-functions-key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{40,}",
+      "description": "Azure Function access keys",
+      "severity": "high"
+    },
+    {
+      "name": "Webhook Secrets",
+      "pattern": "(?i)(webhook[_-]?secret|webhook[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "Webhook secrets",
+      "severity": "high"
+    },
+    {
+      "name": "SignalR Connection",
+      "pattern": "(?i)(signalr[_-]?connection|signalr[_-]?url)[\"'\\s]*[:=][\"'\\s]*https://[^\"'\\s]+\\.service\\.signalr\\.net",
+      "description": "SignalR connection strings",
+      "severity": "medium"
+    },
+    {
+      "name": "Azure Container Registry",
+      "pattern": "(?i)(acr[_-]?password|registry[_-]?password)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{40,}",
+      "description": "Azure Container Registry passwords",
+      "severity": "high"
+    },
+    {
+      "name": "GitHub Personal Access Token",
+      "pattern": "(?i)(github[_-]?token|gh[_-]?token)[\"'\\s]*[:=][\"'\\s]*gh[pousr]_[A-Za-z0-9]{36}",
+      "description": "GitHub personal access tokens",
+      "severity": "high"
+    },
+    {
+      "name": "Azure DevOps PAT",
+      "pattern": "(?i)(azure[_-]?devops[_-]?token|ado[_-]?token|vsts[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{52}",
+      "description": "Azure DevOps personal access tokens",
+      "severity": "high"
+    }
+  ],
+  "exclusions": [
+    {
+      "pattern": "(?i)(example|sample|test|demo|placeholder|dummy|fake|mock)",
+      "description": "Exclude example/test values"
+    },
+    {
+      "pattern": "(?i)(localhost|127\\.0\\.0\\.1|\\(localdb\\)|example\\.com)",
+      "description": "Exclude local development values"
+    },
+    {
+      "pattern": "(?i)(your[_-]?key|your[_-]?secret|your[_-]?token|\\[key\\]|\\[secret\\]|\\[token\\])",
+      "description": "Exclude placeholder values"
+    },
+    {
+      "pattern": "(?i)(todo|fixme|changeme|replace)",
+      "description": "Exclude TODO/FIXME comments"
+    },
+    {
+      "pattern": "(?i)(defaultconnection|testconnection|devconnection)",
+      "description": "Exclude standard connection names"
+    }
+  ],
+  "file_exclusions": [
+    "*.md",
+    "*.txt",
+    "*.log",
+    "*.example",
+    "*.sample",
+    "*.template",
+    "appsettings.Development.json",
+    "appsettings.Local.json",
+    "launchSettings.json",
+    "*.Test.cs",
+    "*.Tests.cs",
+    "*Test*.cs",
+    "*Tests*.cs",
+    "TestData/*",
+    "SampleData/*"
+  ],
+  "severity_levels": {
+    "high": {
+      "description": "Critical secrets that must never be committed",
+      "action": "block"
+    },
+    "medium": {
+      "description": "Potentially sensitive information that should be reviewed",
+      "action": "warn"
+    },
+    "low": {
+      "description": "Information that might be sensitive in certain contexts",
+      "action": "info"
+    }
+  },
+  "dotnet_specific": {
+    "user_secrets": {
+      "description": "Use dotnet user-secrets for local development",
+      "command": "dotnet user-secrets set \"ConnectionStrings:DefaultConnection\" \"your-connection-string\""
+    },
+    "configuration": {
+      "description": "Use IConfiguration and IOptions for configuration management",
+      "patterns": [
+        "appsettings.json",
+        "appsettings.{Environment}.json",
+        "User Secrets",
+        "Environment Variables",
+        "Azure Key Vault"
+      ]
+    },
+    "best_practices": [
+      "Use Azure Key Vault for production secrets",
+      "Use User Secrets for development",
+      "Use environment variables for containerized deployments",
+      "Implement IOptionsMonitor for configuration changes",
+      "Use Data Protection API for sensitive data encryption",
+      "Implement proper certificate management",
+      "Use Managed Identity for Azure services",
+      "Enable application logging without sensitive data"
+    ]
+  }
+}

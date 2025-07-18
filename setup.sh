@@ -24,6 +24,7 @@ INSTALL_CONTEXT7="n"
 INSTALL_GEMINI="n"
 INSTALL_NOTIFICATIONS="n"
 USE_DIRECT_COMMANDS="n"
+INSTALL_DOTNET_TEMPLATES="n"
 OS=""
 AUDIO_PLAYER=""
 OVERWRITE_ALL="n"
@@ -280,6 +281,17 @@ prompt_optional_components() {
     if ! safe_read_yn USE_DIRECT_COMMANDS "  Use direct commands (no sub-agents)? (y/n): "; then
         exit 1
     fi
+    echo
+    
+    # .NET Core 8 specialization
+    print_color "$CYAN" ".NET Core 8 Specialization (Optional)"
+    echo "  Install .NET Core 8 specific templates and configurations"
+    echo "  • Replaces generic templates with .NET Core 8 optimized versions"
+    echo "  • Includes C# 12, ASP.NET Core 8, and Entity Framework Core 8 patterns"
+    echo "  • Adds .NET specific security patterns and development commands"
+    if ! safe_read_yn INSTALL_DOTNET_TEMPLATES "  Install .NET Core 8 templates? (y/n): "; then
+        exit 1
+    fi
     
     # Only detect OS if notifications are enabled
     if [ "$INSTALL_NOTIFICATIONS" = "y" ]; then
@@ -472,6 +484,13 @@ copy_framework_files() {
                     copy_with_check "$config" "$dest" "Configuration file"
                 fi
             done
+            
+            # Copy .NET specific security patterns if .NET templates are selected
+            if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet.json" ]; then
+                copy_with_check "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet.json" \
+                              "$TARGET_DIR/.claude/hooks/config/sensitive-patterns.json" \
+                              ".NET Core 8 security patterns"
+            fi
         fi
         
         # Copy README for reference
@@ -533,27 +552,53 @@ copy_framework_files() {
         fi
         
         # Copy CONTEXT template files
-        if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-component.md" ]; then
-            copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier2-component.md" \
-                          "$TARGET_DIR/docs/CONTEXT-tier2-component.md" \
-                          "Tier 2 documentation template"
-        fi
-        
-        if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier3-feature.md" ]; then
-            copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier3-feature.md" \
-                          "$TARGET_DIR/docs/CONTEXT-tier3-feature.md" \
-                          "Tier 3 documentation template"
+        if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ]; then
+            # Use .NET Core 8 specific templates
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-dotnet-component.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier2-dotnet-component.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier2-component.md" \
+                              ".NET Core 8 Tier 2 documentation template"
+            fi
+            
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier3-dotnet-feature.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier3-dotnet-feature.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier3-feature.md" \
+                              ".NET Core 8 Tier 3 documentation template"
+            fi
+            
+            # Copy .NET Core 8 specific project structure
+            if [ -f "$SCRIPT_DIR/docs/ai-context/project-structure-dotnet-core-8.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/ai-context/project-structure-dotnet-core-8.md" \
+                              "$TARGET_DIR/docs/ai-context/project-structure.md" \
+                              ".NET Core 8 project structure template"
+            fi
+        else
+            # Use generic templates
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-component.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier2-component.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier2-component.md" \
+                              "Tier 2 documentation template"
+            fi
+            
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier3-feature.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier3-feature.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier3-feature.md" \
+                              "Tier 3 documentation template"
+            fi
         fi
     fi
     
     # Create CLAUDE.md from template if it doesn't exist
-    if [ ! -f "$TARGET_DIR/CLAUDE.md" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE.md" ]; then
-        cp "$SCRIPT_DIR/docs/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
-        print_color "$GREEN" "✓ Created CLAUDE.md from template"
-    else
-        if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
-            print_color "$YELLOW" "→ Preserved existing CLAUDE.md"
+    if [ ! -f "$TARGET_DIR/CLAUDE.md" ]; then
+        if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" ]; then
+            cp "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" "$TARGET_DIR/CLAUDE.md"
+            print_color "$GREEN" "✓ Created CLAUDE.md from .NET Core 8 template"
+        elif [ -f "$SCRIPT_DIR/docs/CLAUDE.md" ]; then
+            cp "$SCRIPT_DIR/docs/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
+            print_color "$GREEN" "✓ Created CLAUDE.md from template"
         fi
+    else
+        print_color "$YELLOW" "→ Preserved existing CLAUDE.md"
     fi
     
     # Create MCP-ASSISTANT-RULES.md from template if Gemini is selected
