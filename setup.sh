@@ -25,6 +25,7 @@ INSTALL_GEMINI="n"
 INSTALL_NOTIFICATIONS="n"
 USE_DIRECT_COMMANDS="n"
 INSTALL_DOTNET_TEMPLATES="n"
+INSTALL_GOLANG_TEMPLATES="n"
 OS=""
 AUDIO_PLAYER=""
 OVERWRITE_ALL="n"
@@ -353,6 +354,17 @@ prompt_optional_components() {
     if ! safe_read_yn INSTALL_DOTNET_TEMPLATES "  Install .NET Core 8 templates? (y/n): "; then
         exit 1
     fi
+    echo
+    
+    # Go language specialization
+    print_color "$CYAN" "Go Language Specialization (Optional)"
+    echo "  Install Go specific templates and configurations"
+    echo "  • Replaces generic templates with Go optimized versions"
+    echo "  • Includes Go 1.21+ features, concurrency patterns, and best practices"
+    echo "  • Adds Go specific security patterns and development commands"
+    if ! safe_read_yn INSTALL_GOLANG_TEMPLATES "  Install Go templates? (y/n): "; then
+        exit 1
+    fi
     
     # Only detect OS if notifications are enabled
     if [ "$INSTALL_NOTIFICATIONS" = "y" ]; then
@@ -552,6 +564,13 @@ copy_framework_files() {
                               "$TARGET_DIR/.claude/hooks/config/sensitive-patterns.json" \
                               ".NET Core 8 security patterns"
             fi
+            
+            # Copy Go specific security patterns if Go templates are selected
+            if [ "$INSTALL_GOLANG_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/hooks/config/sensitive-patterns-golang.json" ]; then
+                copy_with_check "$SCRIPT_DIR/hooks/config/sensitive-patterns-golang.json" \
+                              "$TARGET_DIR/.claude/hooks/config/sensitive-patterns.json" \
+                              "Go security patterns"
+            fi
         fi
         
         # Copy README for reference
@@ -633,6 +652,26 @@ copy_framework_files() {
                               "$TARGET_DIR/docs/ai-context/project-structure.md" \
                               ".NET Core 8 project structure template"
             fi
+        elif [ "$INSTALL_GOLANG_TEMPLATES" = "y" ]; then
+            # Use Go specific templates
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-golang-component.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier2-golang-component.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier2-component.md" \
+                              "Go Tier 2 documentation template"
+            fi
+            
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier3-golang-feature.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier3-golang-feature.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier3-feature.md" \
+                              "Go Tier 3 documentation template"
+            fi
+            
+            # Copy Go specific project structure
+            if [ -f "$SCRIPT_DIR/docs/ai-context/project-structure-golang.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/ai-context/project-structure-golang.md" \
+                              "$TARGET_DIR/docs/ai-context/project-structure.md" \
+                              "Go project structure template"
+            fi
         else
             # Use generic templates
             if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-component.md" ]; then
@@ -654,6 +693,9 @@ copy_framework_files() {
         if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" ]; then
             cp "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" "$TARGET_DIR/CLAUDE.md"
             print_color "$GREEN" "✓ Created CLAUDE.md from .NET Core 8 template"
+        elif [ "$INSTALL_GOLANG_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-golang.md" ]; then
+            cp "$SCRIPT_DIR/docs/CLAUDE-golang.md" "$TARGET_DIR/CLAUDE.md"
+            print_color "$GREEN" "✓ Created CLAUDE.md from Go template"
         elif [ -f "$SCRIPT_DIR/docs/CLAUDE.md" ]; then
             cp "$SCRIPT_DIR/docs/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
             print_color "$GREEN" "✓ Created CLAUDE.md from template"

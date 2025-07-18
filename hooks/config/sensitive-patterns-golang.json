@@ -1,0 +1,492 @@
+{
+  "patterns": [
+    {
+      "name": "Database Connection Strings",
+      "pattern": "(?i)(database_url|db_url|database_connection|db_connection|connection_string|dsn)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+://[^\"'\\s]+",
+      "description": "Database connection strings with protocols",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "example.com",
+        "test.db",
+        "memory:",
+        ":memory:"
+      ]
+    },
+    {
+      "name": "PostgreSQL Connection Strings",
+      "pattern": "(?i)(postgres|postgresql)://[^\"'\\s]+:[^\"'\\s]+@[^\"'\\s]+",
+      "description": "PostgreSQL connection strings with credentials",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "test:",
+        "example"
+      ]
+    },
+    {
+      "name": "MySQL Connection Strings",
+      "pattern": "(?i)(mysql|mariadb)://[^\"'\\s]+:[^\"'\\s]+@[^\"'\\s]+",
+      "description": "MySQL/MariaDB connection strings with credentials",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "test:",
+        "example"
+      ]
+    },
+    {
+      "name": "Redis Connection Strings",
+      "pattern": "(?i)(redis_url|redis_connection)[\"'\\s]*[:=][\"'\\s]*redis://[^\"'\\s]+",
+      "description": "Redis connection strings",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "redis://redis:6379",
+        "redis://localhost"
+      ]
+    },
+    {
+      "name": "MongoDB Connection Strings",
+      "pattern": "(?i)(mongo_url|mongodb_url|mongodb_connection)[\"'\\s]*[:=][\"'\\s]*mongodb://[^\"'\\s]+",
+      "description": "MongoDB connection strings",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "mongodb://localhost"
+      ]
+    },
+    {
+      "name": "API Keys and Tokens",
+      "pattern": "(?i)(api_key|api_token|access_token|secret_key|private_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Generic API keys and tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "placeholder",
+        "your_api_key",
+        "your_token"
+      ]
+    },
+    {
+      "name": "JWT Secrets",
+      "pattern": "(?i)(jwt_secret|jwt_key|jwt_signing_key|token_secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{32,}",
+      "description": "JWT signing secrets and keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_jwt_secret"
+      ]
+    },
+    {
+      "name": "OAuth Client Secrets",
+      "pattern": "(?i)(client_secret|oauth_secret|oauth_client_secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "OAuth client secrets",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_client_secret"
+      ]
+    },
+    {
+      "name": "AWS Access Keys",
+      "pattern": "(?i)(aws_access_key|aws_access_key_id)[\"'\\s]*[:=][\"'\\s]*AKIA[A-Z0-9]{16}",
+      "description": "AWS access key IDs",
+      "severity": "high",
+      "exclusions": [
+        "AKIAIOSFODNN7EXAMPLE"
+      ]
+    },
+    {
+      "name": "AWS Secret Keys",
+      "pattern": "(?i)(aws_secret_key|aws_secret_access_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/]{40}",
+      "description": "AWS secret access keys",
+      "severity": "high",
+      "exclusions": [
+        "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+      ]
+    },
+    {
+      "name": "Google Cloud Service Account Keys",
+      "pattern": "(?i)(google_credentials|gcp_key|service_account_key)[\"'\\s]*[:=][\"'\\s]*\\{[^}]*\"private_key\"[^}]*\\}",
+      "description": "Google Cloud service account JSON keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "GitHub Personal Access Tokens",
+      "pattern": "(?i)(github_token|gh_token|github_pat)[\"'\\s]*[:=][\"'\\s]*gh[ps]_[A-Za-z0-9_]{36,}",
+      "description": "GitHub personal access tokens",
+      "severity": "high",
+      "exclusions": [
+        "ghp_example",
+        "ghs_example"
+      ]
+    },
+    {
+      "name": "Stripe API Keys",
+      "pattern": "(?i)(stripe_key|stripe_secret)[\"'\\s]*[:=][\"'\\s]*(sk_live_[A-Za-z0-9]{24,}|pk_live_[A-Za-z0-9]{24,})",
+      "description": "Stripe API keys (live keys)",
+      "severity": "high",
+      "exclusions": [
+        "sk_test_",
+        "pk_test_"
+      ]
+    },
+    {
+      "name": "SendGrid API Keys",
+      "pattern": "(?i)(sendgrid_key|sendgrid_api_key)[\"'\\s]*[:=][\"'\\s]*SG\\.[A-Za-z0-9_-]{22}\\.[A-Za-z0-9_-]{43}",
+      "description": "SendGrid API keys",
+      "severity": "high",
+      "exclusions": [
+        "SG.example"
+      ]
+    },
+    {
+      "name": "Mailgun API Keys",
+      "pattern": "(?i)(mailgun_key|mailgun_api_key)[\"'\\s]*[:=][\"'\\s]*key-[A-Za-z0-9]{32}",
+      "description": "Mailgun API keys",
+      "severity": "high",
+      "exclusions": [
+        "key-example"
+      ]
+    },
+    {
+      "name": "Twilio Auth Tokens",
+      "pattern": "(?i)(twilio_token|twilio_auth_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{32}",
+      "description": "Twilio auth tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Slack Bot Tokens",
+      "pattern": "(?i)(slack_token|slack_bot_token)[\"'\\s]*[:=][\"'\\s]*xoxb-[A-Za-z0-9-]+",
+      "description": "Slack bot tokens",
+      "severity": "high",
+      "exclusions": [
+        "xoxb-example"
+      ]
+    },
+    {
+      "name": "Discord Bot Tokens",
+      "pattern": "(?i)(discord_token|discord_bot_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{24}\\.[A-Za-z0-9]{6}\\.[A-Za-z0-9_-]{27}",
+      "description": "Discord bot tokens",
+      "severity": "high",
+      "exclusions": [
+        "example"
+      ]
+    },
+    {
+      "name": "Encryption Keys",
+      "pattern": "(?i)(encryption_key|secret_key|private_key|signing_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{32,}",
+      "description": "Encryption and signing keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_key",
+        "insert_key_here"
+      ]
+    },
+    {
+      "name": "Session Secrets",
+      "pattern": "(?i)(session_secret|session_key|cookie_secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{32,}",
+      "description": "Session and cookie secrets",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_secret"
+      ]
+    },
+    {
+      "name": "Password Hashes",
+      "pattern": "(?i)(password_hash|bcrypt_hash|argon2_hash)[\"'\\s]*[:=][\"'\\s]*\\$[2abyxz]\\$[0-9]{2}\\$[A-Za-z0-9./]{53}",
+      "description": "Bcrypt password hashes",
+      "severity": "medium",
+      "exclusions": [
+        "$2a$10$example"
+      ]
+    },
+    {
+      "name": "Certificate Files",
+      "pattern": "-----BEGIN [A-Z ]+-----[\\s\\S]*-----END [A-Z ]+-----",
+      "description": "PEM certificate and key files",
+      "severity": "high",
+      "exclusions": [
+        "BEGIN CERTIFICATE REQUEST",
+        "BEGIN PUBLIC KEY"
+      ]
+    },
+    {
+      "name": "SSH Private Keys",
+      "pattern": "-----BEGIN OPENSSH PRIVATE KEY-----[\\s\\S]*-----END OPENSSH PRIVATE KEY-----",
+      "description": "OpenSSH private keys",
+      "severity": "high",
+      "exclusions": []
+    },
+    {
+      "name": "RSA Private Keys",
+      "pattern": "-----BEGIN RSA PRIVATE KEY-----[\\s\\S]*-----END RSA PRIVATE KEY-----",
+      "description": "RSA private keys",
+      "severity": "high",
+      "exclusions": []
+    },
+    {
+      "name": "Docker Registry Credentials",
+      "pattern": "(?i)(docker_password|registry_password|docker_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "Docker registry credentials",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Kubernetes Secrets",
+      "pattern": "(?i)(k8s_token|kubernetes_token|service_account_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "Kubernetes service account tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Go Module Proxy Tokens",
+      "pattern": "(?i)(goproxy_token|go_proxy_token|athens_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Go module proxy authentication tokens",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Go Build Tokens",
+      "pattern": "(?i)(go_build_token|goreleaser_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Go build and release tokens",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Environment Variables with Secrets",
+      "pattern": "(?i)(PASSWORD|SECRET|KEY|TOKEN|CREDENTIALS)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{8,}",
+      "description": "Environment variables containing secrets",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "placeholder",
+        "your_password",
+        "your_secret",
+        "your_key",
+        "your_token",
+        "insert_",
+        "change_me",
+        "replace_me"
+      ]
+    },
+    {
+      "name": "Hardcoded Passwords",
+      "pattern": "(?i)(password|pwd|pass)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9@#$%^&*!]{8,}",
+      "description": "Hardcoded passwords",
+      "severity": "high",
+      "exclusions": [
+        "password123",
+        "password",
+        "12345678",
+        "admin",
+        "test",
+        "example",
+        "dummy",
+        "placeholder",
+        "your_password",
+        "insert_password",
+        "change_me"
+      ]
+    },
+    {
+      "name": "Email Credentials",
+      "pattern": "(?i)(smtp_password|email_password|mail_password)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9@#$%^&*!]{8,}",
+      "description": "Email server credentials",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_password"
+      ]
+    },
+    {
+      "name": "FTP Credentials",
+      "pattern": "(?i)(ftp_password|sftp_password|ftp_user)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9@#$%^&*!]{6,}",
+      "description": "FTP/SFTP credentials",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "anonymous",
+        "ftp"
+      ]
+    },
+    {
+      "name": "Cloud Storage Keys",
+      "pattern": "(?i)(s3_key|gcs_key|azure_key|storage_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "Cloud storage access keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Payment Gateway Keys",
+      "pattern": "(?i)(paypal_key|square_key|braintree_key|razorpay_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Payment gateway API keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "sandbox",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Database Passwords in URLs",
+      "pattern": "://[^:/@]+:[^@]{6,}@[^/]+",
+      "description": "Database URLs with embedded passwords",
+      "severity": "high",
+      "exclusions": [
+        "://user:password@",
+        "://test:test@",
+        "://root:root@",
+        "://admin:admin@",
+        "://localhost",
+        "://127.0.0.1",
+        "://example"
+      ]
+    },
+    {
+      "name": "Go Embed Sensitive Files",
+      "pattern": "//go:embed.*\\.(key|pem|p12|pfx|crt|cer)",
+      "description": "Go embed directives for sensitive files",
+      "severity": "medium",
+      "exclusions": [
+        "public.key",
+        "ca.crt",
+        "server.crt"
+      ]
+    },
+    {
+      "name": "License Keys",
+      "pattern": "(?i)(license_key|product_key|activation_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9-]{20,}",
+      "description": "Software license keys",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_license"
+      ]
+    },
+    {
+      "name": "Webhook Secrets",
+      "pattern": "(?i)(webhook_secret|webhook_key|hook_secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{20,}",
+      "description": "Webhook secrets and verification keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Encryption Salts",
+      "pattern": "(?i)(salt|encryption_salt|password_salt)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{16,}",
+      "description": "Encryption salts",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "CI/CD Tokens",
+      "pattern": "(?i)(ci_token|cd_token|pipeline_token|build_token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "CI/CD pipeline tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Monitoring Service Keys",
+      "pattern": "(?i)(datadog_key|newrelic_key|sentry_dsn|honeybadger_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Monitoring and observability service keys",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "CDN and Cache Keys",
+      "pattern": "(?i)(cloudflare_key|fastly_key|cloudfront_key|cdn_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "CDN and cache service keys",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Analytics Keys",
+      "pattern": "(?i)(google_analytics|ga_tracking|mixpanel_token|segment_key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "Analytics service keys",
+      "severity": "low",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "UA-XXXXXXXX-X"
+      ]
+    }
+  ]
+}
