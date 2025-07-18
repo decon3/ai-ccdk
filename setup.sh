@@ -139,14 +139,75 @@ safe_read_conflict() {
 check_claude_code() {
     print_color "$YELLOW" "Checking prerequisites..."
     
-    if ! command -v claude &> /dev/null; then
-        print_color "$RED" "❌ Claude Code is not installed or not in PATH"
-        echo "Please install Claude Code from: https://github.com/anthropics/claude-code"
-        echo "After installation, make sure 'claude' command is available in your terminal"
+    # Check if claude command is available (handles both PATH and aliases)
+    if command -v claude &> /dev/null; then
+        print_color "$GREEN" "✓ Claude Code is installed"
+        return 0
+    fi
+    
+    # If not found via command, try to check for aliases in interactive shell
+    if bash -i -c 'type claude' &> /dev/null 2>&1; then
+        print_color "$GREEN" "✓ Claude Code is available (via alias)"
+        return 0
+    fi
+    
+    # Alternative check: try to source common shell configs and check again
+    local shell_configs=(
+        "$HOME/.bashrc"
+        "$HOME/.bash_profile"
+        "$HOME/.zshrc"
+        "$HOME/.profile"
+    )
+    
+    for config in "${shell_configs[@]}"; do
+        if [ -f "$config" ]; then
+            if bash -c "source '$config' && type claude" &> /dev/null 2>&1; then
+                print_color "$GREEN" "✓ Claude Code is available (via alias in $config)"
+                return 0
+            fi
+        fi
+    done
+    
+    # Check common installation paths
+    local claude_paths=(
+        "$HOME/.local/bin/claude"
+        "$HOME/bin/claude"
+        "/usr/local/bin/claude"
+        "/opt/homebrew/bin/claude"
+    )
+    
+    for path in "${claude_paths[@]}"; do
+        if [ -f "$path" ] && [ -x "$path" ]; then
+            print_color "$GREEN" "✓ Claude Code found at: $path"
+            return 0
+        fi
+    done
+    
+    # If still not found, show error with helpful guidance
+    print_color "$RED" "❌ Claude Code is not installed or not accessible"
+    echo
+    echo "Please ensure Claude Code is installed and available:"
+    echo "  • Install from: https://github.com/anthropics/claude-code"
+    echo "  • Make sure 'claude' command works in your terminal"
+    echo "  • If using an alias, make sure it's properly configured"
+    echo "  • Try running 'claude --version' to verify installation"
+    echo
+    echo "If you have Claude Code installed but still see this error:"
+    echo "  • Check your PATH environment variable"
+    echo "  • Verify the claude binary has execute permissions"
+    echo "  • Try running the setup script from the same shell where 'claude' works"
+    echo
+    echo "If you're certain Claude Code is installed and working:"
+    if ! safe_read_yn skip_check "  Skip Claude Code check and continue anyway? (y/n): "; then
         exit 1
     fi
     
-    print_color "$GREEN" "✓ Claude Code is installed"
+    if [ "$skip_check" = "y" ]; then
+        print_color "$YELLOW" "⚠️  Skipping Claude Code check - proceeding with installation"
+        return 0
+    else
+        exit 1
+    fi
 }
 
 # Check for required tools
