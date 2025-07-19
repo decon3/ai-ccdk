@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.2.0] - 2025-07-19
+
+### Added
+- New `/migrate` command for comprehensive technology stack migrations
+  - Support for .NET Framework 4.7.2/4.8 to .NET Core 8 migrations
+  - Direct migration approach (no sub-agents) for streamlined execution
+  - Parallel operation support with wire-level compatibility preservation
+  - Automatic enum/constant value preservation for data compatibility
+  - Encryption compatibility validation for shared systems
+- Migration templates system in `docs/migration-templates/`
+  - Comprehensive .NET Framework to .NET Core migration guide
+  - Extensible template structure for future migration paths
+  - Integration with setup script for automatic installation
+- Enhanced setup script with migration templates directory creation and copying
+
+### Technical Details
+- Added `commands/migrate.md` and `commands/migrate-direct.md` templates
+- Created `docs/migration-templates/` directory structure with README
+- Updated setup script to copy migration templates during installation
+- Enhanced command documentation with migration workflow examples
+- Updated main README with migration capabilities and post-installation testing
+
 ## [2.1.0] - 2025-07-11
 
 ### Added

@@ -94,6 +94,19 @@ All commands benefit from automatic context injection via the `subagent-context-
 
 **How it works**: Analyzes file structure, maps dependencies, identifies logical split points, and handles all import/export updates across the codebase.
 
+### 🔄 `/migrate`
+**Purpose**: Orchestrate comprehensive technology stack migrations with automated analysis, transformation, and validation.
+
+**When to use**:
+- Migrating between framework versions (.NET Framework → .NET Core)
+- Modernizing legacy applications
+- Technology stack upgrades
+- When parallel operation is required during transition
+
+**How it works**: Analyzes current project structure, loads appropriate migration templates, executes systematic transformation including project files, dependencies, configuration, and code patterns. Supports parallel operation requirements with wire-level compatibility preservation.
+
+**Usage**: `/migrate from=dotnet-framework-4-7-2 to=dotnet-core-8`
+
 ### 🤝 `/handoff`
 **Purpose**: Preserve context when ending a session or when the conversation becomes too long.
 
@@ -137,6 +150,14 @@ All commands benefit from automatic context injection via the `subagent-context-
 # ... implement suggested approach ...
 /gemini-consult                                    # Follow up with results
 /update-docs "document optimization approach"      # Capture insights
+```
+
+### Technology Migration
+```bash
+/migrate from=dotnet-framework-4-7-2 to=dotnet-core-8  # Execute migration
+# ... system validates and transforms codebase ...
+/code-review "review migrated codebase"                # Validate migration
+/update-docs "document migration changes"              # Update context
 ```
 
 ## Customization

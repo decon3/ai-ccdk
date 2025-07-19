@@ -397,6 +397,7 @@ create_directories() {
     mkdir -p "$TARGET_DIR/docs/ai-context"
     mkdir -p "$TARGET_DIR/docs/open-issues"
     mkdir -p "$TARGET_DIR/docs/specs"
+    mkdir -p "$TARGET_DIR/docs/migration-templates"
     mkdir -p "$TARGET_DIR/logs"
     
     # Only create sounds directory if notifications are enabled
@@ -639,6 +640,16 @@ copy_framework_files() {
                 if [ -f "$spec" ]; then
                     dest="$TARGET_DIR/docs/specs/$(basename "$spec")"
                     copy_with_check "$spec" "$dest" "Specification template"
+                fi
+            done
+        fi
+        
+        # Copy migration templates
+        if [ -d "$SCRIPT_DIR/docs/migration-templates" ]; then
+            for migration in "$SCRIPT_DIR/docs/migration-templates/"*.md; do
+                if [ -f "$migration" ]; then
+                    dest="$TARGET_DIR/docs/migration-templates/$(basename "$migration")"
+                    copy_with_check "$migration" "$dest" "Migration template"
                 fi
             done
         fi

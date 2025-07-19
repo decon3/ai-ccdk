@@ -70,6 +70,7 @@ Claude Code's output quality directly depends on what it knows about your projec
 - Context injection for all Sub-agents and Gemini MCP calls 
 - Audio notifications for task completion (optional)
 - One-command workflows for complex tasks
+- Comprehensive technology migration orchestration
 
 ---
 
@@ -133,6 +134,7 @@ your-project/
 │   └── settings.local.json # Generated Claude Code configuration
 ├── docs/                  # Documentation templates and examples
 │   ├── ai-context/        # Core documentation files
+│   ├── migration-templates/ # Technology migration guides
 │   ├── open-issues/       # Issue tracking examples
 │   ├── specs/             # Specification templates
 │   ├── CONTEXT-tier2-component.md  # Component documentation template
@@ -158,6 +160,12 @@ your-project/
    ```bash
    claude
    /full-context "analyze my project structure"
+   ```
+
+4. **For technology migrations** (optional):
+   ```bash
+   claude
+   /migrate from=dotnet-framework-4-7-2 to=dotnet-core-8
    ```
 
 
