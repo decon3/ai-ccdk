@@ -25,6 +25,7 @@ INSTALL_GEMINI="n"
 INSTALL_NOTIFICATIONS="n"
 USE_DIRECT_COMMANDS="n"
 INSTALL_DOTNET_TEMPLATES="n"
+INSTALL_DOTNET_FRAMEWORK_TEMPLATES="n"
 INSTALL_GOLANG_TEMPLATES="n"
 OS=""
 AUDIO_PLAYER=""
@@ -356,6 +357,17 @@ prompt_optional_components() {
     fi
     echo
     
+    # .NET Framework 4.7.2 specialization
+    print_color "$CYAN" ".NET Framework 4.7.2 Specialization (Optional)"
+    echo "  Install .NET Framework 4.7.2 specific templates and configurations"
+    echo "  • Replaces generic templates with .NET Framework 4.7.2 optimized versions"
+    echo "  • Includes C# 7.3, ASP.NET Web API 2, and Entity Framework 6.x patterns"
+    echo "  • Adds Windows service, IIS deployment, and legacy enterprise patterns"
+    if ! safe_read_yn INSTALL_DOTNET_FRAMEWORK_TEMPLATES "  Install .NET Framework 4.7.2 templates? (y/n): "; then
+        exit 1
+    fi
+    echo
+    
     # Go language specialization
     print_color "$CYAN" "Go Language Specialization (Optional)"
     echo "  Install Go specific templates and configurations"
@@ -558,11 +570,18 @@ copy_framework_files() {
                 fi
             done
             
-            # Copy .NET specific security patterns if .NET templates are selected
+            # Copy .NET Core 8 specific security patterns if .NET Core templates are selected
             if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet.json" ]; then
                 copy_with_check "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet.json" \
                               "$TARGET_DIR/.claude/hooks/config/sensitive-patterns.json" \
                               ".NET Core 8 security patterns"
+            fi
+            
+            # Copy .NET Framework 4.7.2 specific security patterns if .NET Framework templates are selected
+            if [ "$INSTALL_DOTNET_FRAMEWORK_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet-framework.json" ]; then
+                copy_with_check "$SCRIPT_DIR/hooks/config/sensitive-patterns-dotnet-framework.json" \
+                              "$TARGET_DIR/.claude/hooks/config/sensitive-patterns.json" \
+                              ".NET Framework 4.7.2 security patterns"
             fi
             
             # Copy Go specific security patterns if Go templates are selected
@@ -652,6 +671,33 @@ copy_framework_files() {
                               "$TARGET_DIR/docs/ai-context/project-structure.md" \
                               ".NET Core 8 project structure template"
             fi
+        elif [ "$INSTALL_DOTNET_FRAMEWORK_TEMPLATES" = "y" ]; then
+            # Use .NET Framework 4.7.2 specific templates
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-dotnet-framework-component.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier2-dotnet-framework-component.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier2-component.md" \
+                              ".NET Framework 4.7.2 Tier 2 documentation template"
+            fi
+            
+            if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier3-dotnet-framework-feature.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/CONTEXT-tier3-dotnet-framework-feature.md" \
+                              "$TARGET_DIR/docs/CONTEXT-tier3-feature.md" \
+                              ".NET Framework 4.7.2 Tier 3 documentation template"
+            fi
+            
+            # Copy .NET Framework 4.7.2 specific project structure
+            if [ -f "$SCRIPT_DIR/docs/ai-context/project-structure-dotnet-framework-4-7-2.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/ai-context/project-structure-dotnet-framework-4-7-2.md" \
+                              "$TARGET_DIR/docs/ai-context/project-structure.md" \
+                              ".NET Framework 4.7.2 project structure template"
+            fi
+            
+            # Copy .NET Framework 4.7.2 specific commands
+            if [ -f "$SCRIPT_DIR/docs/dotnet-framework-4-7-2-commands.md" ]; then
+                copy_with_check "$SCRIPT_DIR/docs/dotnet-framework-4-7-2-commands.md" \
+                              "$TARGET_DIR/docs/commands.md" \
+                              ".NET Framework 4.7.2 commands reference"
+            fi
         elif [ "$INSTALL_GOLANG_TEMPLATES" = "y" ]; then
             # Use Go specific templates
             if [ -f "$SCRIPT_DIR/docs/CONTEXT-tier2-golang-component.md" ]; then
@@ -693,6 +739,9 @@ copy_framework_files() {
         if [ "$INSTALL_DOTNET_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" ]; then
             cp "$SCRIPT_DIR/docs/CLAUDE-dotnet-core-8.md" "$TARGET_DIR/CLAUDE.md"
             print_color "$GREEN" "✓ Created CLAUDE.md from .NET Core 8 template"
+        elif [ "$INSTALL_DOTNET_FRAMEWORK_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-dotnet-framework-4-7-2.md" ]; then
+            cp "$SCRIPT_DIR/docs/CLAUDE-dotnet-framework-4-7-2.md" "$TARGET_DIR/CLAUDE.md"
+            print_color "$GREEN" "✓ Created CLAUDE.md from .NET Framework 4.7.2 template"
         elif [ "$INSTALL_GOLANG_TEMPLATES" = "y" ] && [ -f "$SCRIPT_DIR/docs/CLAUDE-golang.md" ]; then
             cp "$SCRIPT_DIR/docs/CLAUDE-golang.md" "$TARGET_DIR/CLAUDE.md"
             print_color "$GREEN" "✓ Created CLAUDE.md from Go template"

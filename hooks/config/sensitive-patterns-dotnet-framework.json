@@ -1,0 +1,473 @@
+{
+  "patterns": [
+    {
+      "name": "SQL Server Connection Strings",
+      "pattern": "(?i)(connectionstring|data source|server|initial catalog)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]*;[^\"'\\s]*",
+      "description": "SQL Server connection strings with credentials",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "127.0.0.1",
+        "(localdb)",
+        "example.com",
+        "test.db",
+        "Integrated Security=true",
+        "Trusted_Connection=true"
+      ]
+    },
+    {
+      "name": "Database Connection Strings with Passwords",
+      "pattern": "(?i)(password|pwd)[\"'\\s]*[:=][\"'\\s]*[^;\"'\\s]+",
+      "description": "Database connection strings containing passwords",
+      "severity": "high",
+      "exclusions": [
+        "password=;",
+        "pwd=;",
+        "password=\"\"",
+        "pwd=\"\"",
+        "password=password",
+        "pwd=test"
+      ]
+    },
+    {
+      "name": "Entity Framework Connection Strings",
+      "pattern": "(?i)(provider connection string)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+password[^\"'\\s]+",
+      "description": "Entity Framework connection strings with embedded passwords",
+      "severity": "high",
+      "exclusions": [
+        "localhost",
+        "example.com",
+        "test"
+      ]
+    },
+    {
+      "name": "Web.config Connection Strings",
+      "pattern": "<add\\s+name=[\"'][^\"']+[\"']\\s+connectionString=[\"'][^\"']*password[^\"']*[\"']",
+      "description": "Web.config connection string elements with passwords",
+      "severity": "high",
+      "exclusions": [
+        "Integrated Security=true",
+        "Trusted_Connection=true",
+        "password=;"
+      ]
+    },
+    {
+      "name": "App.config Connection Strings",
+      "pattern": "<connectionStrings>[\\s\\S]*?password[\\s\\S]*?</connectionStrings>",
+      "description": "App.config connection strings section with passwords",
+      "severity": "high",
+      "exclusions": [
+        "Integrated Security=true",
+        "Trusted_Connection=true"
+      ]
+    },
+    {
+      "name": "API Keys in Configuration",
+      "pattern": "(?i)(api[_-]?key|apikey|access[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "API keys in configuration files",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "placeholder",
+        "your_api_key",
+        "your_key_here"
+      ]
+    },
+    {
+      "name": "JWT Secrets in Configuration",
+      "pattern": "(?i)(jwt[_-]?secret|jwt[_-]?key|token[_-]?secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{32,}",
+      "description": "JWT signing secrets in configuration",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_jwt_secret",
+        "supersecretkey"
+      ]
+    },
+    {
+      "name": "OAuth Client Secrets",
+      "pattern": "(?i)(client[_-]?secret|oauth[_-]?secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "OAuth client secrets in configuration",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_client_secret"
+      ]
+    },
+    {
+      "name": "Encryption Keys",
+      "pattern": "(?i)(encryption[_-]?key|crypto[_-]?key|secret[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=_-]{32,}",
+      "description": "Encryption keys in configuration",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_key",
+        "insert_key_here"
+      ]
+    },
+    {
+      "name": "Session State Keys",
+      "pattern": "(?i)(session[_-]?key|view[_-]?state[_-]?key|machine[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Fa-f0-9]{48,}",
+      "description": "ASP.NET session state and view state keys",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test"
+      ]
+    },
+    {
+      "name": "Azure Service Keys",
+      "pattern": "(?i)(azure[_-]?key|azure[_-]?secret|storage[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9+/=]{40,}",
+      "description": "Azure service keys and secrets",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "Azure Connection Strings",
+      "pattern": "(?i)(DefaultEndpointsProtocol|AccountName|AccountKey)[\"'\\s]*[:=][\"'\\s]*[^;\"'\\s]+",
+      "description": "Azure storage connection strings",
+      "severity": "high",
+      "exclusions": [
+        "UseDevelopmentStorage=true",
+        "example.com",
+        "test"
+      ]
+    },
+    {
+      "name": "Service Bus Connection Strings",
+      "pattern": "(?i)(Endpoint=sb://)[^;\"'\\s]+;SharedAccessKeyName=[^;\"'\\s]+;SharedAccessKey=[^;\"'\\s]+",
+      "description": "Azure Service Bus connection strings",
+      "severity": "high",
+      "exclusions": [
+        "example.servicebus.windows.net",
+        "test"
+      ]
+    },
+    {
+      "name": "Application Insights Keys",
+      "pattern": "(?i)(instrumentation[_-]?key|appinsights[_-]?key)[\"'\\s]*[:=][\"'\\s]*[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}",
+      "description": "Application Insights instrumentation keys",
+      "severity": "medium",
+      "exclusions": [
+        "00000000-0000-0000-0000-000000000000",
+        "example"
+      ]
+    },
+    {
+      "name": "Windows Service Account Passwords",
+      "pattern": "(?i)(service[_-]?password|account[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]{8,}",
+      "description": "Windows service account passwords",
+      "severity": "high",
+      "exclusions": [
+        "password",
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "WCF Service Credentials",
+      "pattern": "(?i)(wcf[_-]?username|wcf[_-]?password|service[_-]?credential)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "WCF service credentials in configuration",
+      "severity": "high",
+      "exclusions": [
+        "username",
+        "password",
+        "example",
+        "test"
+      ]
+    },
+    {
+      "name": "SMTP Credentials",
+      "pattern": "(?i)(smtp[_-]?username|smtp[_-]?password|mail[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "SMTP server credentials",
+      "severity": "high",
+      "exclusions": [
+        "username",
+        "password",
+        "example",
+        "test@example.com"
+      ]
+    },
+    {
+      "name": "FTP Credentials",
+      "pattern": "(?i)(ftp[_-]?username|ftp[_-]?password|sftp[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "FTP/SFTP credentials",
+      "severity": "high",
+      "exclusions": [
+        "username",
+        "password",
+        "example",
+        "test",
+        "anonymous"
+      ]
+    },
+    {
+      "name": "Private Keys in Configuration",
+      "pattern": "-----BEGIN [A-Z ]+PRIVATE KEY-----[\\s\\S]*?-----END [A-Z ]+PRIVATE KEY-----",
+      "description": "Private keys embedded in configuration",
+      "severity": "high",
+      "exclusions": []
+    },
+    {
+      "name": "Certificates with Private Keys",
+      "pattern": "-----BEGIN CERTIFICATE-----[\\s\\S]*?-----END CERTIFICATE-----[\\s\\S]*?-----BEGIN [A-Z ]*PRIVATE KEY-----",
+      "description": "Certificates with associated private keys",
+      "severity": "high",
+      "exclusions": []
+    },
+    {
+      "name": "Windows Registry Keys for Secrets",
+      "pattern": "(?i)(HKEY_[A-Z_]+\\\\[^\\s]+\\\\[^\\s]*password[^\\s]*)",
+      "description": "Windows registry paths containing password-related keys",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test"
+      ]
+    },
+    {
+      "name": "Active Directory Credentials",
+      "pattern": "(?i)(ldap[_-]?password|ad[_-]?password|domain[_-]?password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "Active Directory and LDAP credentials",
+      "severity": "high",
+      "exclusions": [
+        "password",
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "NuGet API Keys",
+      "pattern": "(?i)(nuget[_-]?api[_-]?key|nuget[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "NuGet package manager API keys",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_api_key"
+      ]
+    },
+    {
+      "name": "Azure DevOps Personal Access Tokens",
+      "pattern": "(?i)(azure[_-]?devops[_-]?token|vsts[_-]?token|tfs[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{52}",
+      "description": "Azure DevOps personal access tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test"
+      ]
+    },
+    {
+      "name": "GitHub Personal Access Tokens",
+      "pattern": "(?i)(github[_-]?token|gh[_-]?token)[\"'\\s]*[:=][\"'\\s]*gh[ps]_[A-Za-z0-9_]{36,}",
+      "description": "GitHub personal access tokens",
+      "severity": "high",
+      "exclusions": [
+        "ghp_example",
+        "ghs_example"
+      ]
+    },
+    {
+      "name": "PayPal API Credentials",
+      "pattern": "(?i)(paypal[_-]?client[_-]?secret|paypal[_-]?secret)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9_-]{20,}",
+      "description": "PayPal API credentials",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "sandbox"
+      ]
+    },
+    {
+      "name": "Stripe API Keys",
+      "pattern": "(?i)(stripe[_-]?key|stripe[_-]?secret)[\"'\\s]*[:=][\"'\\s]*(sk_live_[A-Za-z0-9]{24,}|pk_live_[A-Za-z0-9]{24,})",
+      "description": "Stripe API keys (live keys only)",
+      "severity": "high",
+      "exclusions": [
+        "sk_test_",
+        "pk_test_"
+      ]
+    },
+    {
+      "name": "Twilio Auth Tokens",
+      "pattern": "(?i)(twilio[_-]?token|twilio[_-]?auth[_-]?token)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9]{32}",
+      "description": "Twilio authentication tokens",
+      "severity": "high",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy"
+      ]
+    },
+    {
+      "name": "SendGrid API Keys",
+      "pattern": "(?i)(sendgrid[_-]?key|sendgrid[_-]?api[_-]?key)[\"'\\s]*[:=][\"'\\s]*SG\\.[A-Za-z0-9_-]{22}\\.[A-Za-z0-9_-]{43}",
+      "description": "SendGrid API keys",
+      "severity": "high",
+      "exclusions": [
+        "SG.example"
+      ]
+    },
+    {
+      "name": "Mailgun API Keys",
+      "pattern": "(?i)(mailgun[_-]?key|mailgun[_-]?api[_-]?key)[\"'\\s]*[:=][\"'\\s]*key-[A-Za-z0-9]{32}",
+      "description": "Mailgun API keys",
+      "severity": "high",
+      "exclusions": [
+        "key-example"
+      ]
+    },
+    {
+      "name": "Configuration File Passwords",
+      "pattern": "(?i)<add\\s+key=[\"'][^\"']*password[^\"']*[\"']\\s+value=[\"'][^\"']{8,}[\"']",
+      "description": "Passwords in configuration file appSettings",
+      "severity": "high",
+      "exclusions": [
+        "value=\"\"",
+        "value=\"password\"",
+        "value=\"test\"",
+        "value=\"example\""
+      ]
+    },
+    {
+      "name": "Hardcoded Database Passwords",
+      "pattern": "(?i)(password|pwd)[\"'\\s]*[:=][\"'\\s]*[^;\"'\\s]{6,}[;\"']",
+      "description": "Hardcoded database passwords in connection strings",
+      "severity": "high",
+      "exclusions": [
+        "password=;",
+        "pwd=;",
+        "password=\"\"",
+        "password=password",
+        "password=test",
+        "password=admin"
+      ]
+    },
+    {
+      "name": "Machine Key Validation Keys",
+      "pattern": "(?i)(validationKey|validation[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Fa-f0-9]{128,}",
+      "description": "ASP.NET machine key validation keys",
+      "severity": "high",
+      "exclusions": [
+        "example"
+      ]
+    },
+    {
+      "name": "Machine Key Decryption Keys",
+      "pattern": "(?i)(decryptionKey|decryption[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Fa-f0-9]{48,}",
+      "description": "ASP.NET machine key decryption keys",
+      "severity": "high",
+      "exclusions": [
+        "example"
+      ]
+    },
+    {
+      "name": "Web.config Machine Keys",
+      "pattern": "<machineKey[^>]*validationKey=[\"'][A-Fa-f0-9]{128,}[\"'][^>]*decryptionKey=[\"'][A-Fa-f0-9]{48,}[\"']",
+      "description": "Complete machine key configuration in web.config",
+      "severity": "high",
+      "exclusions": []
+    },
+    {
+      "name": "Entity Framework Passwords",
+      "pattern": "(?i)(provider connection string)[\"'\\s]*[:=][\"'\\s]*[^\"']*password[=\"'][^;\"']+",
+      "description": "Entity Framework connection string passwords",
+      "severity": "high",
+      "exclusions": [
+        "Integrated Security=true",
+        "password=;",
+        "password=\"\""
+      ]
+    },
+    {
+      "name": "App Settings Secret Keys",
+      "pattern": "(?i)<add\\s+key=[\"'][^\"']*secret[^\"']*[\"']\\s+value=[\"'][A-Za-z0-9+/=_-]{20,}[\"']",
+      "description": "Secret keys in appSettings configuration",
+      "severity": "high",
+      "exclusions": [
+        "value=\"\"",
+        "value=\"example\"",
+        "value=\"test\"",
+        "value=\"your_secret_here\""
+      ]
+    },
+    {
+      "name": "IIS Application Pool Credentials",
+      "pattern": "(?i)(processModel|identity)[\"'\\s]*password[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "IIS application pool identity passwords",
+      "severity": "high",
+      "exclusions": [
+        "password=\"\"",
+        "password=password",
+        "AutoGenerate"
+      ]
+    },
+    {
+      "name": "Windows Service Installer Credentials",
+      "pattern": "(?i)(ServiceInstaller|ServiceProcessInstaller)[\\s\\S]*?Password[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "Windows service installer credentials",
+      "severity": "high",
+      "exclusions": [
+        "Password=\"\"",
+        "Password=null"
+      ]
+    },
+    {
+      "name": "Encrypted Configuration Sections",
+      "pattern": "<EncryptedData[^>]*>[\\s\\S]*?<CipherValue>[A-Za-z0-9+/=]+</CipherValue>[\\s\\S]*?</EncryptedData>",
+      "description": "Encrypted configuration sections (potential decryption keys nearby)",
+      "severity": "medium",
+      "exclusions": []
+    },
+    {
+      "name": "License Keys and Serial Numbers",
+      "pattern": "(?i)(license[_-]?key|serial[_-]?number|product[_-]?key)[\"'\\s]*[:=][\"'\\s]*[A-Za-z0-9-]{20,}",
+      "description": "Software license keys and serial numbers",
+      "severity": "medium",
+      "exclusions": [
+        "example",
+        "test",
+        "dummy",
+        "your_license_key"
+      ]
+    },
+    {
+      "name": "Crystal Reports Database Passwords",
+      "pattern": "(?i)(crystal[_-]?reports?)[\\s\\S]*?(password|pwd)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "Crystal Reports database connection passwords",
+      "severity": "high",
+      "exclusions": [
+        "password=;",
+        "password=\"\"",
+        "password=password"
+      ]
+    },
+    {
+      "name": "Report Server Credentials",
+      "pattern": "(?i)(report[_-]?server)[\\s\\S]*?(username|password)[\"'\\s]*[:=][\"'\\s]*[^\"'\\s]+",
+      "description": "SQL Server Reporting Services credentials",
+      "severity": "high",
+      "exclusions": [
+        "username=\"\"",
+        "password=\"\"",
+        "example",
+        "test"
+      ]
+    }
+  ]
+}
