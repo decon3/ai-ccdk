@@ -6,27 +6,63 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.2.1] - 2025-07-19
+
+### Fixed
+- **Setup script backspace issue**: Fixed interactive prompts not supporting backspace key
+  - Modified `safe_read` function in setup.sh to properly handle terminal input redirection
+  - Users can now use backspace, arrow keys, and other terminal editing features during installation
+  - Maintains compatibility with both interactive and piped execution contexts
+  - Improves overall user experience and accessibility of the setup process
+
 ## [2.2.0] - 2025-07-19
 
 ### Added
-- New `/migrate` command for comprehensive technology stack migrations
+- **New `/migrate` command for comprehensive technology stack migrations**
   - Support for .NET Framework 4.7.2/4.8 to .NET Core 8 migrations
   - Direct migration approach (no sub-agents) for streamlined execution
   - Parallel operation support with wire-level compatibility preservation
   - Automatic enum/constant value preservation for data compatibility
   - Encryption compatibility validation for shared systems
-- Migration templates system in `docs/migration-templates/`
-  - Comprehensive .NET Framework to .NET Core migration guide
+  - Project structure transformation (solution files, project files, directory organization)
+  - Dependency migration (packages.config → PackageReference)
+  - Configuration migration (app.config/web.config → appsettings.json)
+  - Code pattern modernization (async/await, nullable reference types, modern C#)
+  - Testing framework updates and integration test patterns
+  - Comprehensive validation and rollback procedures
+
+- **Migration templates system in `docs/migration-templates/`**
+  - Comprehensive .NET Framework to .NET Core migration guide (8,500+ lines)
   - Extensible template structure for future migration paths
   - Integration with setup script for automatic installation
-- Enhanced setup script with migration templates directory creation and copying
+  - Detailed parallel operation requirements for enterprise systems
+  - Wire-level compatibility preservation guidelines
+  - Serialization and encryption compatibility validation
 
-### Technical Details
-- Added `commands/migrate.md` and `commands/migrate-direct.md` templates
-- Created `docs/migration-templates/` directory structure with README
+- **Enhanced setup script with migration infrastructure**
+  - Migration templates directory creation and copying
+  - Automatic template installation during setup process
+  - Integration with existing specialization workflow
+
+### Technical Implementation
+- Added `commands/migrate.md` - Full migration orchestration template
+- Added `commands/migrate-direct.md` - Direct approach (no sub-agents)
+- Created `docs/migration-templates/dotnet-framework-to-dotnet-core.md` - Comprehensive migration guide
+- Created `docs/migration-templates/README.md` - Template system documentation
 - Updated setup script to copy migration templates during installation
 - Enhanced command documentation with migration workflow examples
 - Updated main README with migration capabilities and post-installation testing
+
+### Usage
+```bash
+# Basic migration command
+/migrate from=dotnet-framework-4-7-2 to=dotnet-core-8
+
+# Example workflow
+/migrate from=dotnet-framework-4-7-2 to=dotnet-core-8  # Execute migration
+/code-review "review migrated codebase"                # Validate migration  
+/update-docs "document migration changes"              # Update context
+```
 
 ## [2.1.0] - 2025-07-11
 

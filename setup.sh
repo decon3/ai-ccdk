@@ -61,17 +61,15 @@ safe_read() {
         return 1
     fi
 
-    # Determine the input source
-    local input_source
+    # Use read with proper TTY handling for interactive input
     if [ -t 0 ]; then
-        input_source="/dev/stdin" # Standard input is the terminal
+        # Standard input is the terminal, use it directly
+        read -r -p "$prompt" temp_input
     else
-        input_source="/dev/tty"   # Standard input is piped, use the terminal
+        # Standard input is piped, redirect to TTY for interactive input
+        exec < /dev/tty
+        read -r -p "$prompt" temp_input
     fi
-
-    # Use read -p for the prompt. The prompt is sent to stderr by default
-    # when reading from a source other than the terminal, so it's visible.
-    read -r -p "$prompt" temp_input < "$input_source"
 
     # Assign the value to the variable name passed as the first argument
     # using `printf -v`. This is a safer way to do indirect assignment.
